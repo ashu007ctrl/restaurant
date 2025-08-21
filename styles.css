@@ -969,27 +969,4 @@ html {
         font-size: 1rem;
     }
 }
-/* Sticky Search Bar for Mobile */
-@media (max-width: 600px) {
-  .search-container {
-    position: sticky;
-    top: 60px;
-    z-index: 1000;  /* keep it above other content */
-    background: #fff; /* white background so it doesn’t blend */
-    padding: 0.5rem 0.8rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* subtle shadow */
-  }
-
-  .search-bar {
-    width: 100%;
-    border-radius: 40px;
-    padding: 0.3rem;
-  }
-}
-
-
-
-
-
-
 
