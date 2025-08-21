@@ -937,6 +937,8 @@ html {
   .hero-content {
     padding: 1rem;
     border-radius: 8px;
+      background: transparent; /* blend with hero background */
+    box-shadow: none;        /* remove shadow/border look */
   }
 
   .hero-content h1 {
@@ -988,6 +990,7 @@ html {
     padding: 0.3rem;
   }
 }
+
 
 
 
