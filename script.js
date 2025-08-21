@@ -50,14 +50,19 @@ navLinks.forEach(link => {
         }
     });
 });
-
-// Sticky Search Bar
+// Sticky Search Bar (disabled on mobile)
 let searchBarOffset = searchContainer.offsetTop;
 
 window.addEventListener('scroll', () => {
-    if (window.pageYOffset > searchBarOffset + 100) {
-        searchContainer.classList.add('sticky');
+    // only apply sticky if screen wider than 600px
+    if (window.innerWidth > 600) {
+        if (window.pageYOffset > searchBarOffset + 100) {
+            searchContainer.classList.add('sticky');
+        } else {
+            searchContainer.classList.remove('sticky');
+        }
     } else {
+        // on mobile, always remove sticky
         searchContainer.classList.remove('sticky');
     }
 });
@@ -465,4 +470,5 @@ function handleSwipe() {
             navMenu.classList.remove('active');
         }
     }
+
 } 
