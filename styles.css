@@ -975,7 +975,7 @@ html {
 @media (max-width: 600px) {
   .search-container {
     position: sticky;
-    top: 0;
+    top: 60px;
     z-index: 1000;  /* keep it above other content */
     background: #fff; /* white background so it doesn’t blend */
     padding: 0.5rem 0.8rem;
@@ -988,5 +988,6 @@ html {
     padding: 0.3rem;
   }
 }
+
 
 
