@@ -988,23 +988,5 @@ html {
     padding: 0.3rem;
   }
 }
-/* Mobile Optimization: Hide Hero Background */
-@media (max-width: 600px) {
-  .hero-section {
-    background: none !important;  /* remove background image */
-    min-height: auto;
-    padding: 1rem 0.5rem;
-  }
 
-  .hero-content {
-    background: none;   /* remove overlay box */
-    text-align: center;
-    padding: 0;
-  }
 
-  .hero-content h1 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 0.8rem;
-  }
-}
