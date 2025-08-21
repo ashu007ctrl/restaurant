@@ -990,14 +990,8 @@ html {
     padding: 0.3rem;
   }
 }
-@media (max-width: 600px) {
-  .hero-section {
-    min-height: 420px;        /* shorter height */
-    background-position: center top;
-    background-size: contain; /* fit whole image */
-    background-repeat: no-repeat; /* avoid tiling */
-  }
-      }
+
+
 
 
 
