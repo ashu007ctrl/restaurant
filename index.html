@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramu Kaka Restaurant - Best Food in Town</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>Ramu Kaka Restaurant</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="#home" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#about" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+                <a href="#contact" class="nav-link">
+                    <i class="fas fa-phone"></i>
+                    <span>Contact</span>
+                </a>
+                <a href="foods.html" class="nav-link">
+                    <i class="fas fa-utensils"></i>
+                    <span>Foods</span>
+                </a>
+            </nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+    <section id="home" class="hero-section">
+            <div class="hero-content">
+                <h1> Best restaurant in Lucknow</h1>
+                
+                
+                <div class="search-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search for Dishes (Pizza, Dosa, Maggie...)" class="search-input" id="mainSearchInput">
+                        <button class="search-btn" title="Search dishes" id="mainSearchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="menu-section">
+          <div>
+              <h2 class="section-title" style="font-size: 2rem; margin-bottom: 30px; text-align: center;">Popular Dishes</h2>
+          </div>
+            <div class="menu-grid">
+                <div class="menu-card" data-food="Pizza">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1601924582970-9238bcb495d9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBpenphfGVufDB8fDB8fHww" alt="Pizza">
+                    </div>
+                    <div class="menu-content">
+                        <h3>Pizza</h3>
+                        <p>Fresh baked with premium toppings</p>
+                        <span class="price">₹299</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-food="Burger">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Burger">
+                    </div>
+                    <div class="menu-content">
+                        <h3>Burger</h3>
+                        <p>Juicy patty with fresh vegetables</p>
+                        <span class="price">₹199</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-food="Dosa">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZG9zYXxlbnwwfHwwfHx8MA%3D%3D" alt="Dosa">
+                    </div>
+                    <div class="menu-content">
+                        <h3>Dosa</h3>
+                        <p>Crispy South Indian delight</p>
+                        <span class="price">₹149</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-food="Paratha">
+                    <div class="menu-image">
+                       <img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZnJpZWQlMjByaWNlfGVufDB8fDB8fHww" alt="Fried Rice">
+                    </div>
+                    <div class="menu-content">
+                        <h3>Rice</h3>
+                        <p>Fried rice with vegetables</p>
+                        <span class="price">₹99</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-food="Maggi">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFnZ2klMjBub29kbGVzfGVufDB8fDB8fHww" alt="Maggi">
+                    </div>
+                    <div class="menu-content">
+                        <h3>Maggi</h3>
+                        <p>Quick and delicious noodles</p>
+                        <span class="price">₹79</span>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-food="Chowmein">
+                    <div class="menu-image">
+                        <img src="https://images.unsplash.com/photo-1617622141675-d3005b9067c5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hvd21laW4lMjBub29kbGVzfGVufDB8fDB8fHww" alt="Chowmein">
+                    </div>
+                    <div class="menu-content">
+                        <h3>Chowmein</h3>
+                        <p>Stir-fried noodles with vegetables</p>
+                        <span class="price">₹179</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All Foods Button -->
+            <div class="view-all-foods-section">
+                <a href="foods.html" class="view-all-foods-btn">
+                    <i class="fas fa-utensils"></i>
+                    View All Foods
+                </a>
+            </div>
+>
+            <!-- Order Now Button -->
+            <div class="order-section">
+                <button class="order-btn" id="orderBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    Order Now
+                </button>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Ramu Kaka Restaurant</h2>
+                    <p>Welcome to Ramu Kaka Restaurant, where every dish tells a story of tradition, passion, and love for food. Our journey began with a simple dream - to serve the most authentic and delicious food to our community.</p>
+                    <p>The owner of this chain of Restaurant is <strong> Ramu Kaka </strong>. He is an excellent chef with over 15 years of experience in cooking and have also won several prestigious awards for her outstanding skills and dedication to the art of food. </p>
+                </div>
+                <div class="chef-greeting">
+                    <div class="chef-avatar">
+                        <img src="cheg.jpg" alt="Chef Avatar" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" />
+                    </div>
+                    <p>👋 Welcome!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="contact-content">
+                <h2>Visit Us</h2>
+                <div class="contact-info">
+                    <div class="address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Near BBD University , Lucknow,  226028</p>
+                    </div>
+                    <div class="owner">
+                        <i class="fas fa-user"></i>
+                        <p>Owned by Ramu Kaka</p>
+                    </div>
+                    <div class="phone">
+                        <i class="fas fa-phone"></i>
+                        <p>+91 98765 43210</p>
+                    </div>
+                    <div class="email">
+                        <i class="fas fa-envelope"></i>
+                        <p>info@ramukaka.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>© 2025 Ramu Kaka Restaurant ! </p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 
