@@ -56,7 +56,10 @@ function performFoodSearch() {
             card.style.display = 'block';
             card.style.animation = 'fadeInUp 0.6s ease forwards';
         });
-        return;
+            // Scroll to foods section
+            const foodsSection = document.querySelector('.foods-section');
+            if (foodsSection) foodsSection.scrollIntoView({ behavior: 'smooth' });
+            return;
     }
     
     // Filter food cards based on search term
@@ -74,6 +77,9 @@ function performFoodSearch() {
     
     // Show search results message
     showFoodSearchResults(searchTerm);
+        // Scroll to foods section
+        const foodsSection = document.querySelector('.foods-section');
+        if (foodsSection) foodsSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 function showFoodSearchResults(searchTerm) {
