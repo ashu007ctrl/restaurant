@@ -25,30 +25,33 @@ document.addEventListener('click', (e) => {
 
 // Smooth scrolling for navigation links
 navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
+  link.addEventListener("click", (e) => {
+    const href = link.getAttribute("href");
 
-        // If link goes to another page (like foods.html), let browser handle it
-        if (href && href.includes('.html')) {
-            navMenu.classList.remove('active'); // optional: close mobile menu
-            return; // exit handler so no preventDefault runs
-        }
+    // Case 1: if link points to another page (like foods.html), do nothing
+    if (href && href.endsWith(".html")) {
+      navMenu.classList.remove("active"); // close menu on mobile
+      return; // let browser handle navigation
+    }
 
-        // Otherwise handle smooth scrolling
-        e.preventDefault();
-        const targetSection = document.querySelector(href);
-        
-        if (targetSection) {
-            targetSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            
-            navLinks.forEach(navLink => navLink.classList.remove('active'));
-            link.classList.add('active');
-            navMenu.classList.remove('active');
-        }
-    });
+    // Case 2: if link is an internal section (like #about)
+    if (href && href.startsWith("#")) {
+      e.preventDefault(); // stop default jump
+      const targetSection = document.querySelector(href);
+
+      if (targetSection) {
+        targetSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+
+      // update active link
+      navLinks.forEach((navLink) => navLink.classList.remove("active"));
+      link.classList.add("active");
+      navMenu.classList.remove("active");
+    }
+  });
 });
 // Sticky Search Bar (disabled on mobile)
 let searchBarOffset = searchContainer.offsetTop;
@@ -472,4 +475,5 @@ function handleSwipe() {
     }
 
 } 
+
 
