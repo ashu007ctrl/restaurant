@@ -1,418 +1,356 @@
-// DOM Elements
-const header = document.querySelector('.header');
-const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-const navMenu = document.querySelector('.nav-menu');
-const searchInput = document.querySelector('#foodsSearchInput');
-const searchBtn = document.querySelector('.search-btn');
-const categoryBtns = document.querySelectorAll('.category-btn');
-const foodCards = document.querySelectorAll('.food-card');
-const orderFoodBtns = document.querySelectorAll('.order-food-btn');
-
-// Check for URL search parameter on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchParam = urlParams.get('search');
-    
-    if (searchParam) {
-        // Set the search input value
-        searchInput.value = searchParam;
-        // Perform the search
-        performFoodSearch();
-        // Scroll to search results
-        setTimeout(() => {
-            const foodsSection = document.querySelector('.foods-section');
-            if (foodsSection) {
-                foodsSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 500);
-    }
-});
-
-// Mobile Menu Toggle
-mobileMenuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking outside
-document.addEventListener('click', (e) => {
-    if (!header.contains(e.target)) {
-        navMenu.classList.remove('active');
-    }
-});
-
-// Search Functionality
-searchBtn.addEventListener('click', () => {
-    performFoodSearch();
-});
-
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        performFoodSearch();
-    }
-});
-
-function performFoodSearch() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    
-    if (searchTerm === '') {
-        // Show all cards if search is empty
-        foodCards.forEach(card => {
-            card.style.display = 'block';
-            card.style.animation = 'fadeInUp 0.6s ease forwards';
-        });
-        return;
-    }
-    
-    // Filter food cards based on search term
-    foodCards.forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const description = card.querySelector('p').textContent.toLowerCase();
-        
-        if (title.includes(searchTerm) || description.includes(searchTerm)) {
-            card.style.display = 'block';
-            card.style.animation = 'fadeInUp 0.6s ease forwards';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    
-    // Show search results message
-    showFoodSearchResults(searchTerm);
-}
-
-function showFoodSearchResults(searchTerm) {
-    const visibleCards = Array.from(foodCards).filter(card => 
-        card.style.display !== 'none'
-    );
-    
-    if (visibleCards.length === 0) {
-        showNoFoodResultsMessage();
-    }
-}
-
-function showNoFoodResultsMessage() {
-    // Remove existing no results message
-    const existingMessage = document.querySelector('.no-results');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
-    
-    // Create and show no results message
-    const message = document.createElement('div');
-    message.className = 'no-results';
-    message.innerHTML = `
-        <div style="text-align: center; padding: 2rem; color: #666;">
-            <i class="fas fa-search" style="font-size: 3rem; color: #ff6b35; margin-bottom: 1rem;"></i>
-            <h3>No dishes found</h3>
-            <p>Try searching for something else or browse our menu</p>
-        </div>
-    `;
-    
-    const foodsSection = document.querySelector('.foods-section');
-    const foodsGrid = document.querySelector('.foods-grid');
-    foodsSection.insertBefore(message, foodsGrid.nextSibling);
-}
-
-// Category Filtering
-categoryBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Remove active class from all buttons
-        categoryBtns.forEach(b => b.classList.remove('active'));
-        // Add active class to clicked button
-        btn.classList.add('active');
-        
-        const category = btn.getAttribute('data-category');
-        filterFoodsByCategory(category);
-    });
-});
-
-function filterFoodsByCategory(category) {
-    foodCards.forEach(card => {
-        const cardCategory = card.getAttribute('data-category');
-        
-        if (category === 'all' || cardCategory === category) {
-            card.style.display = 'block';
-            card.style.animation = 'fadeInUp 0.6s ease forwards';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-// Order Food Button Functionality
-orderFoodBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const foodName = btn.getAttribute('data-food');
-        const foodPrice = btn.getAttribute('data-price');
-        
-        // Add shake animation
-        btn.classList.add('shake');
-        
-        // Show order confirmation
-        showFoodOrderConfirmation(foodName, foodPrice);
-        
-        // Remove shake class after animation
-        setTimeout(() => {
-            btn.classList.remove('shake');
-        }, 500);
-    });
-});
-
-function showFoodOrderConfirmation(foodName, foodPrice) {
-    // Create confirmation modal
-    const modal = document.createElement('div');
-    modal.className = 'order-modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>🎉 Order Placed Successfully!</h3>
-                <button class="close-modal">&times;</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foods - Ramu Kaka Restaurant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>Ramu Kaka Restaurant</h1>
             </div>
-            <div class="modal-body">
-                <p>Thank you for choosing Ramu Kaka Restaurant!</p>
-                <p>Your order for <strong>${foodName}</strong> will be ready in 20-30 minutes.</p>
-                <div class="order-details">
-                    <p><strong>Order ID:</strong> #${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
-                    <p><strong>Item:</strong> ${foodName}</p>
-                    <p><strong>Price:</strong> ₹${foodPrice}</p>
-                    <p><strong>Estimated Delivery:</strong> 20-30 minutes</p>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="index.html#about" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+                <a href="index.html#contact" class="nav-link">
+                    <i class="fas fa-phone"></i>
+                    <span>Contact</span>
+                </a>
+            </nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Foods Hero Section -->
+        <section class="foods-hero-section">
+            <div class="foods-hero-content">
+                <h1 class="foods-hero-title" style=" color: rgb(50, 121, 22);">Our Complete Menu</h1>
+                <p class="foods-hero-description">Explore our extensive collection of delicious dishes. From traditional favorites to modern fusion, we have something for everyone.</p>
+                
+                <!-- Search Bar -->
+                                <div class="search-container">
+                                    <form id="foodsSearchForm" class="search-bar" autocomplete="off">
+                                        <i class="fas fa-search search-icon"></i>
+                                        <input type="text" placeholder="Search for any dish..." class="search-input" id="foodsSearchInput">
+                                      
+                                    </form>
+                                </div>
+            </div>
+        </section>
+
+        <!-- Foods Grid Section -->
+        <section class="foods-section">
+            <div class="foods-container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 20px; font-size: 2.3rem;">All Available Dishes</h2>
+                
+                <!-- Food Categories -->
+                <div class="food-categories">
+                    <button class="category-btn active" data-category="all">All</button>
+                    <button class="category-btn" data-category="indian">Indian</button>
+                    <button class="category-btn" data-category="chinese">Chinese</button>
+                    <button class="category-btn" data-category="fast-food">Fast Food</button>
+                    <button class="category-btn" data-category="desserts">Desserts</button>
+                    <button class="category-btn" data-category="beverages">Beverages</button>
+                </div>
+
+                <!-- Foods Grid -->
+                <div class="foods-grid" id="foodsGrid">
+                    <!-- Indian Food Items -->
+                    <div class="food-card" data-category="indian">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1728910107534-e04e261768ae?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Butter Chicken">
+                        </div>
+                        <div class="food-content">
+                            <h3>Butter Chicken</h3>
+                            <p>Creamy and rich Indian curry</p>
+                            <div class="food-details">
+                                <span class="price">₹399</span>
+                                <span class="rating">⭐ 4.8</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Butter Chicken" data-price="399">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="food-card" data-category="indian">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFzYWxhJTIwZG9zYXxlbnwwfHwwfHx8MA%3D%3D" alt="Masala Dosa">
+                        </div>
+                        <div class="food-content">
+                            <h3>Masala Dosa</h3>
+                            <p>Crispy South Indian delight</p>
+                            <div class="food-details">
+                                <span class="price">₹149</span>
+                                <span class="rating">⭐ 4.6</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Masala Dosa" data-price="149">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+                    
+
+                    <div class="food-card" data-category="indian">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cGFuZWVyJTIwdGlra2F8ZW58MHx8MHx8fDA%3D" alt="Paneer Tikka">
+                        </div>
+                        <div class="food-content">
+                            <h3>Paneer Tikka</h3>
+                            <p>Grilled cottage cheese with spices</p>
+                            <div class="food-details">
+                                <span class="price">₹249</span>
+                                <span class="rating">⭐ 4.7</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Paneer Tikka" data-price="249">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chinese Food Items -->
+                    <div class="food-card" data-category="chinese">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1617622141675-d3005b9067c5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hvd21laW58ZW58MHx8MHx8fDA%3D" alt="Chowmein">
+                        </div>
+                        <div class="food-content">
+                            <h3>Chowmein</h3>
+                            <p>Stir-fried noodles with vegetables</p>
+                            <div class="food-details">
+                                <span class="price">₹179</span>
+                                <span class="rating">⭐ 4.5</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Chowmein" data-price="179">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+ <div class="food-card" data-category="chinese">
+                        <div class="food-image">
+                           <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFnZ2klMjBub29kbGVzfGVufDB8fDB8fHww" alt="Maggi">
+                        </div>
+                        <div class="food-content">
+                            <h3>Maggi</h3>
+                            <p>Stir-fried nmaggie with vegetables</p>
+                            <div class="food-details">
+                                <span class="price">₹99</span>
+                                <span class="rating">⭐ 4.5</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Chowmein" data-price="99">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                    <div class="food-card" data-category="chinese">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZnJpZWQlMjByaWNlfGVufDB8fDB8fHww" alt="Fried Rice">
+                        </div>
+                        <div class="food-content">
+                            <h3>Fried Rice</h3>
+                            <p>Chinese style vegetable fried rice</p>
+                            <div class="food-details">
+                                <span class="price">₹159</span>
+                                <span class="rating">⭐ 4.4</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Fried Rice" data-price="159">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="food-card" data-category="chinese">
+                        <div class="food-image">
+                            <img src="https://t3.ftcdn.net/jpg/06/97/12/70/360_F_697127055_5DLbBRm9lUsvg2ubqBJJclBGO6AxPrpu.jpg" alt="Manchurian">
+                        </div>
+                        <div class="food-content">
+                            <h3>Manchurian</h3>
+                            <p>Spicy vegetable balls in sauce</p>
+                            <div class="food-details">
+                                <span class="price">₹199</span>
+                                <span class="rating">⭐ 4.6</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Manchurian" data-price="199">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Fast Food Items -->
+                    <div class="food-card" data-category="fast-food">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Burger">
+                        </div>
+                        <div class="food-content">
+                            <h3>Classic Burger</h3>
+                            <p>Juicy patty with fresh vegetables</p>
+                            <div class="food-details">
+                                <span class="price">₹199</span>
+                                <span class="rating">⭐ 4.7</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Classic Burger" data-price="199">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="food-card" data-category="fast-food">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGl6emF8ZW58MHx8MHx8fDA%3D" alt="Pizza">
+                        </div>
+                        <div class="food-content">
+                            <h3>Margherita Pizza</h3>
+                            <p>Fresh baked with premium toppings</p>
+                            <div class="food-details">
+                                <span class="price">₹299</span>
+                                <span class="rating">⭐ 4.8</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Margherita Pizza" data-price="299">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="food-card" data-category="fast-food">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1598679253544-2c97992403ea?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZnJlbmNoJTIwZnJpZXN8ZW58MHx8MHx8fDA%3D" alt="French Fries">
+                        </div>
+                        <div class="food-content">
+                            <h3>French Fries</h3>
+                            <p>Crispy golden potato fries</p>
+                            <div class="food-details">
+                                <span class="price">₹99</span>
+                                <span class="rating">⭐ 4.5</span>
+                            </div>
+                            <button class="order-food-btn" data-food="French Fries" data-price="99">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Desserts -->
+                    <div class="food-card" data-category="desserts">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1714799263412-2e0c1f875959?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFzZ3VsbGF8ZW58MHx8MHx8fDA%3D" alt="Gulab Jamun">
+                        </div>
+                        <div class="food-content">
+                            <h3>Gulab Jamun</h3>
+                            <p>Sweet Indian dessert balls</p>
+                            <div class="food-details">
+                                <span class="price">₹79</span>
+                                <span class="rating">⭐ 4.6</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Gulab Jamun" data-price="79">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="food-card" data-category="desserts">
+                        <div class="food-image">
+                            <img src="https://plus.unsplash.com/premium_photo-1690440686714-c06a56a1511c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dmFuaWxhJTIwaWNlJTIwY3JlYW18ZW58MHx8MHx8fDA%3D" alt="Ice Cream">
+                        </div>
+                        <div class="food-content">
+                            <h3>Vanilla Ice Cream</h3>
+                            <p>Creamy vanilla ice cream</p>
+                            <div class="food-details">
+                                <span class="price">₹89</span>
+                                <span class="rating">⭐ 4.4</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Vanilla Ice Cream" data-price="89">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Beverages -->
+                    <div class="food-card" data-category="beverages">
+                        <div class="food-image">
+                            <img src="https://plus.unsplash.com/premium_photo-1674406481284-43eba097a291?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dGVhfGVufDB8fDB8fHww" alt="Masala Chai">
+                        </div>
+                        <div class="food-content">
+                            <h3>Masala Chai</h3>
+                            <p>Spiced Indian tea</p>
+                            <div class="food-details">
+                                <span class="price">₹49</span>
+                                <span class="rating">⭐ 4.7</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Masala Chai" data-price="49">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="food-card" data-category="beverages">
+                        <div class="food-image">
+                            <img src="https://images.unsplash.com/photo-1692620609860-be6717812f71?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFzc2l8ZW58MHx8MHx8fDA%3D" alt="Lassi">
+                        </div>
+                        <div class="food-content">
+                            <h3>Sweet Lassi</h3>
+                            <p>Refreshing yogurt drink</p>
+                            <div class="food-details">
+                                <span class="price">₹69</span>
+                                <span class="rating">⭐ 4.5</span>
+                            </div>
+                            <button class="order-food-btn" data-food="Sweet Lassi" data-price="69">
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="modal-btn confirm-btn">Track Order</button>
-                <button class="modal-btn cancel-btn">Close</button>
+        </section>
+
+        <!-- Back to Home Button -->
+        <section class="back-home-section">
+            <div class="back-home-container">
+                <a href="index.html" class="back-home-btn">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </a>
             </div>
-        </div>
-    `;
-    
-    // Add modal styles
-    const modalStyles = document.createElement('style');
-    modalStyles.textContent = `
-        .order-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            animation: fadeIn 0.3s ease;
-        }
+        </section>
         
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            animation: slideIn 0.3s ease;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .modal-header h3 {
-            color: #ff6b35;
-            margin: 0;
-        }
-        
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #999;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-body {
-            margin-bottom: 2rem;
-        }
-        
-        .modal-body p {
-            margin-bottom: 1rem;
-            color: #666;
-            line-height: 1.6;
-        }
-        
-        .order-details {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-        }
-        
-        .order-details p {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .modal-footer {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-        
-        .modal-btn {
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .confirm-btn {
-            background: #ff6b35;
-            color: white;
-        }
-        
-        .confirm-btn:hover {
-            background: #e55a2b;
-        }
-        
-        .cancel-btn {
-            background: #f0f0f0;
-            color: #666;
-        }
-        
-        .cancel-btn:hover {
-            background: #e0e0e0;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-    `;
-    
-    document.head.appendChild(modalStyles);
-    document.body.appendChild(modal);
-    
-    // Close modal functionality
-    const closeModal = () => {
-        modal.remove();
-        modalStyles.remove();
-    };
-    
-    modal.querySelector('.close-modal').addEventListener('click', closeModal);
-    modal.querySelector('.cancel-btn').addEventListener('click', closeModal);
-    modal.querySelector('.confirm-btn').addEventListener('click', () => {
-        alert('Order tracking feature coming soon!');
-        closeModal();
-    });
-    
-    // Close modal when clicking outside
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-}
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>© 2025 Ramu Kaka Restaurant ! </p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </main>
 
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', () => {
-    const animatedElements = document.querySelectorAll('.food-card');
-    
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-});
-
-// Add loading animation to page
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
-// Add hover effects to food cards
-foodCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) scale(1)';
-    });
-});
-
-// Add keyboard navigation support
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        navMenu.classList.remove('active');
-        const modal = document.querySelector('.order-modal');
-        if (modal) {
-            modal.remove();
-        }
-    }
-});
-
-// Add touch support for mobile
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-});
-
-document.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-});
-
-function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
-    
-    if (Math.abs(diff) > swipeThreshold) {
-        if (diff > 0 && touchStartX < 100) {
-            // Swipe left from left edge - open menu
-            navMenu.classList.add('active');
-        } else if (diff < 0 && navMenu.classList.contains('active')) {
-            // Swipe right when menu is open - close menu
-            navMenu.classList.remove('active');
-        }
-    }
-} 
+    <script src="foods.js"></script>
+</body>
+</html> 
