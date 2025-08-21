@@ -231,8 +231,8 @@ body {
 }
 
 .search-btn {
-    background: #ff6b35;
-    color: white;
+    background: transparent;
+    color: #333;
     border: none;
     padding: 1rem 2rem;
     border-radius: 50px;
@@ -243,8 +243,8 @@ body {
 }
 
 .search-btn:hover {
-    background: #e55a2b;
-    transform: scale(1.05);
+    background: transparent;
+    transform: none;
 }
 
 /* Menu Section */
