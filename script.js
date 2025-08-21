@@ -26,14 +26,17 @@ document.addEventListener('click', (e) => {
 // Smooth scrolling for navigation links
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        // Skip if it's an external link (like foods.html)
-        if (link.getAttribute('href').includes('.html')) {
-            return;
+        const href = link.getAttribute('href');
+
+        // If link goes to another page (like foods.html), let browser handle it
+        if (href && href.includes('.html')) {
+            navMenu.classList.remove('active'); // optional: close mobile menu
+            return; // exit handler so no preventDefault runs
         }
-        
+
+        // Otherwise handle smooth scrolling
         e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
+        const targetSection = document.querySelector(href);
         
         if (targetSection) {
             targetSection.scrollIntoView({
@@ -41,11 +44,8 @@ navLinks.forEach(link => {
                 block: 'start'
             });
             
-            // Update active nav link
             navLinks.forEach(navLink => navLink.classList.remove('active'));
             link.classList.add('active');
-            
-            // Close mobile menu after navigation
             navMenu.classList.remove('active');
         }
     });
@@ -472,3 +472,4 @@ function handleSwipe() {
     }
 
 } 
+
